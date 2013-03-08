@@ -20,9 +20,9 @@ public enum WarzoneConfig {
 	RESETONLOAD (Boolean.class),
 	RESETONUNLOAD (Boolean.class),
 	UNBREAKABLE (Boolean.class),
-	JOINMIDBATTLE (Boolean.class);
-	
-	
+	JOINMIDBATTLE (Boolean.class),
+	XPKILLMETER (Boolean.class);
+
 	private final Class<?> configType;
 
 	private WarzoneConfig(Class<?> configType) {
