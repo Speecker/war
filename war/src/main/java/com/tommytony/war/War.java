@@ -28,6 +28,7 @@ import com.tommytony.war.command.WarCommandHandler;
 import com.tommytony.war.config.FlagReturn;
 import com.tommytony.war.config.InventoryBag;
 import com.tommytony.war.config.KillstreakReward;
+import com.tommytony.war.config.MySQLConfig;
 import com.tommytony.war.config.TeamConfig;
 import com.tommytony.war.config.TeamConfigBag;
 import com.tommytony.war.config.TeamKind;
@@ -95,6 +96,7 @@ public class War extends JavaPlugin {
 
 	private final InventoryBag defaultInventories = new InventoryBag();
 	private KillstreakReward killstreakReward;
+	private MySQLConfig mysqlConfig;
 
 	private final WarConfigBag warConfig = new WarConfigBag();
 	private final WarzoneConfigBag warzoneDefaultConfig = new WarzoneConfigBag();
@@ -235,6 +237,7 @@ public class War extends JavaPlugin {
 		this.getCommandWhitelist().add("who");
 		this.getZoneMakerNames().add("tommytony");
 		this.setKillstreakReward(new KillstreakReward());
+		this.setMysqlConfig(new MySQLConfig());
 		
 		// Add constants
 		this.getDeadlyAdjectives().clear();
@@ -268,6 +271,14 @@ public class War extends JavaPlugin {
 			SpoutFadeOutMessageJob fadeOutMessagesTask = new SpoutFadeOutMessageJob();
 			this.getServer().getScheduler().scheduleSyncRepeatingTask(this, fadeOutMessagesTask, 100, 100);
 		}
+		if (this.mysqlConfig.isEnabled()) {
+			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+			} catch (Exception ex) {
+				this.log("MySQL driver not found!", Level.SEVERE);
+				this.getServer().getPluginManager().disablePlugin(this);
+			}
+		}
 		
 		// Get own log file
 		try {
@@ -281,6 +292,7 @@ public class War extends JavaPlugin {
 		    Formatter formatter = new WarLogFormatter();
 	        handler.setFormatter(formatter);   
 		    this.warLogger.addHandler(handler);
+			this.getLogger().addHandler(handler);
 		} catch (IOException e) {
 			this.getLogger().log(Level.WARNING, "Failed to create War log file");
 		}
@@ -982,9 +994,9 @@ public class War extends JavaPlugin {
 		// Log to Bukkit console 
 		this.getLogger().log(lvl, str);
 		
-		if (this.warLogger != null) {
-			this.warLogger.log(lvl, str);
-		}
+//		if (this.warLogger != null) {
+//			this.warLogger.log(lvl, str);
+//		}
 	}
 
 	// the only way to find a zone that has only one corner
@@ -1240,5 +1252,13 @@ public class War extends JavaPlugin {
 
 	public void setKillstreakReward(KillstreakReward killstreakReward) {
 		this.killstreakReward = killstreakReward;
+	}
+
+	public MySQLConfig getMysqlConfig() {
+		return mysqlConfig;
+	}
+
+	public void setMysqlConfig(MySQLConfig mysqlConfig) {
+		this.mysqlConfig = mysqlConfig;
 	}
 }
