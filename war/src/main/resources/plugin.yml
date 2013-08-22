@@ -91,6 +91,9 @@ commands:
     usage: Warzone blocks are restored, teams are respawned but score remains unaffected. All zone-makers can do this, even if they are not an author of the zone. Provide a zone name if not standing in warzone or lobby.
         Ex - /nextbattle [zone-name]
 # Warzone creation commands
+  setitemspawn:
+    description: War> Use to create a Itemspawn
+    usage: Use to create a Itemspawn
   setzone:
     description: War> Use to create a warzone. Lobby is created and blocks are saved when the second corner is set. You can only edit zones you create or those listing you as author (add authors with /setzoneconfig author:yourname).
     usage: Use to create a warzone. Lobby is created and blocks are saved when the second corner is set. You can only edit zones you create or those listing you as author (add authors with /setzoneconfig author:yourname). Warzones must be at least 10 blocks wide in all directions.
